@@ -1,0 +1,1 @@
+This is a Django-site to search scientific papers, rate them and read other scientific's review.
