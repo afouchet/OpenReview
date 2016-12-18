@@ -1,0 +1,17 @@
+{% extends "open_review/base.html" %}
+{% block body %}
+<div>
+  <form action="{% url 'open_review:logs' %}" method="post" class="col-lg-4">
+    {% csrf_token %}
+    <legend>Login</legend>
+    <label for="username">User name</label>
+    <input type="text" name="username" class="form-control">
+    <label for="password">Password</label>
+    <input type="password" name="password" class="form-control">
+    <button>Log</button>
+  </form>
+  {% if errors %} {{ errors }} {% endif %}
+</div>
+
+{% endblock %}
+

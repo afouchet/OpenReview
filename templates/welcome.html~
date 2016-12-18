@@ -1,0 +1,127 @@
+{% extends "swear_jar/header.html" %}
+{% block body %}
+
+{% include "swear_jar/am_chart_header.html" %}
+<script src="https://www.amcharts.com/lib/3/pie.js"></script>
+
+<div class="container">
+  <h1>Welcome to SwearJar</h1>
+      <div class="container">
+	<h2>What's the point</h2>
+        This site wants to improve working conditions by reducing swearwords. Each time someone, in the open space, swears or yell something, he has to put 0.10$ in your office SwearJar. This money will be used to buy cookies, beer or an overhead projector.	
+      </div>
+      <div class="container">
+	<h2>Any cool feature?</h2>
+	  <div>
+          Not much. We store the information. We do make nice graphs of a person's swearing habits.
+	  </div>
+	  <script>
+	     var chartWeeklyData = [{'week': '2016-08-22', 'curses': 7}, {'week': '2016-08-29', 'curses': 1}, {'week': '2016-09-05', 'curses': 0}, {'week': '2016-09-12', 'curses': 0}]; 
+
+            AmCharts.ready(function () {
+              // --- Weekly graph ---
+              var chartWeekly = AmCharts.makeChart("chart_week_div", {
+                 "balloon":{
+                   "fixedPosition":true
+                 },
+                 "categoryAxis": {
+                   "gridCount": 4,
+                   "gridPosition": "start",
+                   "title": "Week",
+                 },
+                 "categoryField": "week",
+                 "dataProvider": [
+	           {'week': '2016-08-22', 'curses': 10},
+	           {'week': '2016-08-29', 'curses': 12},
+	           {'week': '2016-09-05', 'curses': 11},
+	           {'week': '2016-09-12', 'curses': 8}],
+                 "export": {
+                   "enabled": true
+                 },
+                 "graphs": [{
+                   "valueField": "curses",
+                   "balloonText": "Week [[category]]: <b>[[value]]</b>",
+                   "bullet": "round",
+                   "lineThickness": 2,
+                   "type": "smoothedLine", 
+                 }],
+                 "labelText": "[[title]]: [[value]]",
+                 "titleField": "curse",
+                 "titles": [{"text": "Number of curses by week"}],
+                 "type": "serial",
+                 "valueAxes": [{"title": "Number of curses"}],
+              });
+              chartWeekly.invalidateSize();
+          
+              var chart2 = AmCharts.makeChart("chart_tot_count_div", {
+                "type": "pie",
+                "theme": "light",
+                "titles": [{"text": "Curses count"}],
+                "dataProvider": [
+	          {"curse": "fuck", "number": 16},
+	          {"curse": "Banged table", "number": 15},
+	          {"curse": "shit", "number": 10},
+	        ],
+                "valueField": "number",
+                "titleField": "curse",
+                "balloon":{
+                  "fixedPosition":true
+                },
+                "labelText": "[[title]]: [[value]]",
+                "export": {
+                  "enabled": true
+                },
+                "startDuration": 0
+             });
+	     
+             var chartDaily = AmCharts.makeChart("chart_weekday_div", {
+                "balloon":{
+                  "fixedPosition":true
+                },
+                "categoryAxis": {
+                  "gridCount": 7,
+                  "gridPosition": "start",
+                  "title": "Weekday",
+                },
+                "categoryField": "weekday",
+                "dataProvider": [
+             	     {'weekday': 'Monday', 'curses': 6},
+             	     {'weekday': 'Tuesday', 'curses': 7},
+             	     {'weekday': 'Wednesday', 'curses': 8},
+             	     {'weekday': 'Thursday', 'curses': 11},
+             	     {'weekday': 'Friday', 'curses': 9},
+             	     {'weekday': 'Saturday', 'curses': 0},
+             	     {'weekday': 'Sunday', 'curses': 0},
+             	     ],
+                "export": {
+                  "enabled": true
+                },
+                "graphs": [{
+                  "valueField": "curses",
+                  "balloonText": "Day [[category]]: <b>[[value]]</b>",
+                  "bullet": "round",
+                  "lineThickness": 2,
+                  "type": "smoothedLine", 
+                }],
+                "labelText": "[[title]]: [[value]]",
+                "titleField": "curse",
+                "titles": [{"text": "Number of curses by Weekday"}],
+                "type": "serial",
+                "valueAxes": [{"title": "Number of curses"}],
+             });
+  
+             // AXES
+             chartDaily.invalidateSize();
+            });
+	  </script>
+          <div id="chart_tot_count_div" class="col-xs-4 col-sm-3 col-md-2" style="width:500px;height:300px;"></div>
+          <div id="chart_week_div" class="col-xs-4 col-sm-3 col-md-2" style="width:500px;height:300px;"></div>
+          <div id="chart_weekday_div" class="col-xs-4 col-sm-3 col-md-2" style="width:500px;height:300px;"></div>
+      </div>
+      <div class="container">
+	<h2>How do I join?</h2>
+	<a href={% url 'swear_jar:join_swear_jar' %}>Click here!</a>
+      </div>
+</div>
+
+{% endblock %}

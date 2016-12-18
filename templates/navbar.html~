@@ -1,0 +1,29 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href={% url 'swear_jar:homepage' %}>Swear Jar</a>
+    </div>
+  <div id="navbar" class="collapse navbar-collapse">
+  <ul class="nav navbar-nav">
+    {% if request.user.id %}
+      <li><a href={% url 'swear_jar:player_home' %}>My stats</a></li>
+      <li><a href={% url 'swear_jar:results' %}>My group stats</a></li>
+      <li><a href={% url 'swear_jar:denounce_curse' %}>Report curse word</a></li>
+      <li><a href={% url 'swear_jar:reported_curse' %}>Reported curses</a></li>
+      <li><a href={% url 'swear_jar:player_edit' %}>Edit Profile</a></li>
+      <li><a href={% url 'swear_jar:logout' %}>Log out</a></li>
+    {% else %}
+      <li><a href={% url 'swear_jar:login' %}>Log</a></li>
+      <li><a href={% url 'swear_jar:join_swear_jar' %}>Join swear jar</a></li>
+      <li><a href={% url 'swear_jar:search_organisation' %}>Find existing groups</a></li>
+    {% endif %}
+  </ul>
+  </div><!--/.nav-collapse -->
+  </div>
+</nav>
