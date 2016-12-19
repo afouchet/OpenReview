@@ -9,8 +9,10 @@ urlpatterns = [
     url(r'^change_password/$', views.change_password, name='change_password'),
     url(r'^create_profile/$', views.create_profile_form, name='create_profile'),
     url(r'^created_profile/$', views.created_profile, name='created_profile'),
+    url(r'^desc/(?P<publi_id>[0-9]+)$', views.publication_detail, name='search'),
     url(r'^edit_profile/$', views.edit_profile_form, name='edit_profile'),
     url(r'^edited_profile/$', views.edited_profile, name='edited_profile'),
     url(r'^login/$', views.api_login, name='login'),
     url(r'^log/$', views.log, name='logs'),
+    url(r'^search/$', views.search, name='search'),
 ]

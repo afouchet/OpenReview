@@ -1,0 +1,21 @@
+{% extends "open_review/base.html" %}
+{% block body %}
+
+<div class="container">
+   <div class="row">
+     {% for publi in publications %}
+     <div class="panel-group col-lg-3 col-md-4 col-xs-6">
+       <div class="panel panel-primary">
+         <div class="panel-heading">
+           <a href="{% url 'open_review:article_desc' % publi.id}">{{ publi.title }}</a></br>
+         </div>
+         <div class="panel-body">
+           Authors: {{ publi.authors |truncatechars:100 }}
+         </div>
+       </div>
+     </div>
+     {% endfor %}
+   </div>
+</div>
+
+{% endblock %}

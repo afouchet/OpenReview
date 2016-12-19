@@ -5,7 +5,8 @@ from django.core.validators import validate_email
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from .models import Profile, User
+from .models import Profile, User, Publication
+from .services import fetch_publications
 
 def welcome(request):
     return render(request, 'open_review/welcome.html')
@@ -91,3 +92,20 @@ def edited_profile(request):
     request.user.profile.save()
     return render(request, 'open_review/edit_profile.html')
 
+
+def search(request):
+    publications = fetch_publications.get_publications(
+        search_query=request.POST['search_query'],
+        page=int(request.POST['page']),
+        page_size=int(request.POST['page_size']))
+    return render(request, 'open_review/search.html', {
+        'publications': publications,
+        'page': request.POST['page'],
+    })
+    
+
+def publication_detail(request, publi_id):
+    publi = Publication.objects.get(pk=publi_id)
+    return render(request, 'open_review/desc_publi.html', {
+        'publication': publi,
+        })
