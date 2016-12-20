@@ -7,7 +7,7 @@
      <div class="panel-group col-lg-3 col-md-4 col-xs-6">
        <div class="panel panel-primary">
          <div class="panel-heading">
-           <a href="{% url 'open_review:article_desc' % publi.id}">{{ publi.title }}</a></br>
+           <a href="{% url 'open_review:article_desc' publi.id %}">{{ publi.title }}</a></br>
          </div>
          <div class="panel-body">
            Authors: {{ publi.authors |truncatechars:100 }}
@@ -16,6 +16,15 @@
      </div>
      {% endfor %}
    </div>
+</div>
+<div class="pull-right">
+      <form action="{% url 'open_review:search' %}" method="post" class="form-inline">
+	{% csrf_token %}
+	<input type="hidden" name="search_query" value="{{ search_query }}">
+	<input type="hidden" name="page" value="{{ next_page }}">
+	<input type="hidden" name="page_size" value="{{ page_size }}">
+	<button>Next page</button>
+      </form>
 </div>
 
 {% endblock %}
