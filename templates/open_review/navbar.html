@@ -2,13 +2,23 @@
   <div class="container">
     <div class="navbar-header">
       <a class="navbar-brand" href={% url 'open_review:homepage' %} style="display: inline">OpenReview</a>
-      <form action="{% url 'open_review:search' %}" method="post" class="form-inline">
-	{% csrf_token %}
-	<input name="search_query" type="text" placeholder="Search PubMed">
-	<input type="hidden" name="page" value="0">
-	<input type="hidden" name="page_size" value="20">
-	<button>Search</button>
-      </form>
+      <ul class="nav navbar-nav">
+        <li>
+	  <form action="{% url 'open_review:search' %}" method="post" class="form-inline">
+        	{% csrf_token %}
+        	<input name="search_query" type="text" placeholder="Search PubMed">
+        	<input type="hidden" name="page" value="0">
+        	<input type="hidden" name="page_size" value="20">
+        	<button>Search</button>
+          </form>
+	</li>
+	{% if request.user.id %}
+	  <li><a href="{% url 'open_review:logout' %}">Log out</a></li>
+	{% else %}
+	  <li><a href="{% url 'open_review:login' %}">Log in</a></li>
+	  <li><a href="{% url 'open_review:create_profile' %}">Sign in</a></li>
+	{% endif %}
+      </ul>
     </div>
   <div id="navbar" class="collapse navbar-collapse">
   <ul class="nav navbar-nav">
