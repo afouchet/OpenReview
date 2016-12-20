@@ -21,6 +21,7 @@ class Publication(models.Model):
     id_rid = models.CharField(max_length=200)
     id_eic = models.CharField(max_length=200)
     id_pmcid = models.CharField(max_length=200)
+    abstract = models.CharField(max_length=5000)  # Can be "Has abstract"
     attributes = models.CharField(max_length=1000)  # Can be "Has abstract"
     authors = models.CharField(max_length=20000)
     available_url = models.CharField(max_length=2000)
@@ -31,3 +32,15 @@ class Publication(models.Model):
 
 
 KNOWN_ID_TYPE = {'pubmed', 'pii', 'doi', 'pmc', 'mid', 'rid', 'eic', 'pmcid'}
+
+
+RATINGS = [(i / 10., i / 10.) for i in range(51)]
+
+class PubliComment(models.Model):
+    publication = models.ForeignKey(Publication, on_delete=models.CASCADE)
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    text = models.CharField(max_length=2000)
+    rating_overall = models.FloatField(choices=RATINGS)
+    rating_field_contribution = models.FloatField(choices=RATINGS)
+    rating_methodology = models.FloatField(choices=RATINGS)

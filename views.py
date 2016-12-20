@@ -5,7 +5,7 @@ from django.core.validators import validate_email
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from .models import Profile, User, Publication
+from .models import Profile, User, Publication, PubliComment
 from .services import fetch_publications
 
 def welcome(request):
@@ -41,7 +41,7 @@ def created_profile(request):
     return log(request, next_page='open_review:homepage')
     
 
-def log(request, next_page='swear_jar:player_graph'):
+def log(request, next_page='open_review:homepage'):
     user = authenticate(username=request.POST['username'],
                         password=request.POST['password'])
     if not user:
@@ -54,7 +54,7 @@ def log(request, next_page='swear_jar:player_graph'):
 
 
 def api_login(request):
-    return render('open_review/login.html')
+    return render(request, 'open_review/login.html')
 
 
 @login_required(login_url='/swear_jar/login/')
@@ -100,12 +100,49 @@ def search(request):
         page_size=int(request.POST['page_size']))
     return render(request, 'open_review/search.html', {
         'publications': publications,
-        'page': request.POST['page'],
+        'next_page': int(request.POST['page']) + 1,
+        'search_query': request.POST['search_query'],
+        'page_size': int(request.POST['page_size']),
     })
     
 
 def publication_detail(request, publi_id):
     publi = Publication.objects.get(pk=publi_id)
+    comments = publi.publicomment_set.all()
+    nb_comments = comments.count()
+    if not nb_comments:
+        rating_overall = 0
+        rating_field_contribution = 0
+        rating_methodology = 0
+    else:
+        rating_overall = sum(comment.rating_overall for comment in comments) / nb_comments
+        rating_field_contribution = sum(comment.rating_field_contribution for comment in comments) / nb_comments
+        rating_methodology = sum(comment.rating_methodology for comment in comments) / nb_comments
     return render(request, 'open_review/desc_publi.html', {
         'publication': publi,
+        'abstract': fetch_publications.get_abstract(publi),
+        'rating_overall': rating_overall,
+        'rating_field_contribution': rating_field_contribution,
+        'rating_methodology': rating_methodology,
         })
+
+
+def comment_publi(request, publi_id):
+    publi = Publication.objects.get(pk=publi_id)
+    comment = PubliComment(
+        publication=publi,
+        author=request.user.profile,
+        text=request.POST['comment'],
+        rating_overall=request.POST['rating_overall'],
+        rating_field_contribution=request.POST['rating_field_contribution'],
+        rating_methodology=request.POST['rating_methodology'],
+    ).save()
+    return publication_detail(request, publi_id)
+
+
+
+@login_required(login_url='/open_review/login/')
+def api_logout(request):
+    logout(request)
+    # Hack: you are returning on Dolead's result page
+    return HttpResponseRedirect(reverse('open_review:login'))
