@@ -14,7 +14,7 @@ def get_publications(search_query, page=0, page_size=20, db='pubmed'):
 
 def _get_publication_ids(search_query, page=0, page_size=20, db='pubmeb'):
     url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?'
-    url += 'db={db}&&term={search_query}&restart={offset}&retmax={page_size}&retmode=json'.format(
+    url += 'db={db}&&term={search_query}&retstart={offset}&retmax={page_size}&retmode=json'.format(
         db=db, search_query=search_query, offset=page * page_size, page_size=page_size)
     return requests.get(url, params=PARAMS).json()['esearchresult']['idlist']
 
@@ -55,8 +55,8 @@ def _save_publi(publi_json, db):
     return publi
 
 
-def _get_abstract(publication):
-    if 'Has abstract' not in publication.attributes:
+def get_abstract(publication):
+    if 'Has Abstract' not in publication.attributes:
         return 'Not available'
     if not publication.abstract:
         url = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?'
