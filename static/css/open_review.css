@@ -5,4 +5,9 @@ h1 a {
 .panel-heading a, .panel-heading a:visited {
     color: #FFFFFF !important;
 }
+
 body { padding-top: 140px; }
+
+i.fa-star {
+    color:orange;
+}

@@ -1,0 +1,270 @@
+.navbar{
+    color: white;
+    font-size: 2.0em;
+    font-weight: bolder;
+}
+
+#header, #header div, #header nav{
+    background: #cecece;
+    border:0;
+}
+
+#header{
+    min-height: 70px;
+}
+
+#header input, #header button, #header select{
+    padding-top:2px;
+    padding-bottom:2px;
+    height:66px;
+    font-size:1.6em;
+    border:0;
+}
+
+#header button {
+     width: 100%;
+     padding-left: -50px;
+}
+
+#header .form-control{
+    padding:0;
+}
+
+#header .col-md-4{
+    padding-right:0;
+}
+
+#header .col-md-1{
+    padding-left:0;
+    padding-right:0;
+}
+
+#header .col-md-2{
+    padding-left:0;
+    padding-right:0;
+}
+
+#footer{
+  background:#369;
+  color: white;
+  /*position:fixed;
+  bottom:0px;*/
+  /*width:100%;*/
+  text-align:center;
+  font-size: 0.6 em;
+  height:20px;
+}
+
+#searchForm label{
+    text-align:right;
+}
+#searchForm #keywords{
+    width:90%;
+}
+
+#searchResults .publication-info{
+    font-size: 0.9em;
+}
+
+#searchResults .publication{
+    border: 1px solid #369;
+    border-radius: 5px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+#searchResults .pagination-top{
+    text-align: right;
+}
+
+#searchResults .pagination-bottom{
+    text-align: center;
+}
+
+#publicationDetails
+
+.publication-title, .publication-title a{
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.pubmed-link:focus, .pubmed-link:hover{
+    text-decoration: none;
+}
+
+.vcenter{
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+.comment .rating{
+    font-size:0.6em;
+}
+
+.download-on-pub-med{
+    font-size: 2.5em;
+}
+
+#searchResults blockquote{
+    font-size: 0.9em;
+}
+
+#homeScreen .pitch{
+    text-align:center;
+    margin-bottom: 20px;
+}
+
+#homeScreen .thumbnail{
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+#homeScreen .thumbnail .fa{
+    font-size: 6.0em;
+}
+
+#homeScreen .thumbnail .icon{
+    text-align: center;
+}
+
+#homeScreen .thumbnail h3{
+    text-align:center;
+}
+
+#homeScreen .thumbnail p{
+    font-size:1.2em;
+}
+
+#homeScreen .tip{
+    margin-top:20px;
+    text-align:center;
+    font-size:1.2em;
+}
+
+#comments .comment-thumbs .thumbs-up{
+    font-size:1.0em;
+    color: green;
+    background: white;
+}
+
+#comments .comment-thumbs .thumbs-down{
+    font-size:1.0em;
+    color: red;
+    background: white;
+}
+
+.dropdown-menu{
+    width:100%;
+    font-size:1.5em;
+}
+
+.publication-actions{
+    text-align: right;
+}
+
+.pub-details-title{
+    text-decoration: underline;
+}
+
+.stars-placeholder{
+    color: #FFC733;
+    font-size: 1.6em;
+}
+
+.popover{
+    max-width: 375px;
+    font-size: 1em;
+}
+
+.btn{
+    background: #369;
+    color:white;
+    font-weight: bold;
+}
+.btn:hover{
+    color:lightgrey;
+}
+
+.panel-default>.panel-heading{
+    background: #369;
+    color:white;
+    font-size: 1.4em;
+}
+
+.panel{
+    border: 1px solid #369;
+}
+
+#yourOpinion{
+    position:fixed;
+    bottom:0px;
+    right:0px;
+
+    width: 50%;
+    height: 50%;
+
+    font-size:1.5em;
+}
+
+#yourOpinion .panel-heading{
+    font-size: 1.2em;
+}
+
+.close-comment{
+    float:right;
+    cursor:pointer;
+}
+
+#yourOpinionBtn{
+    position:fixed;
+    bottom:0px;
+    right:0px;
+
+    font-size:1.5em;
+    font-weight:bold;
+    background:#369;
+    color:white;
+    padding: 5px;
+
+    border:1px solid #24B;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.user-rating{
+    font-size: 0.7em;
+}
+.row-success{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.average-ratings{
+    font-size: 1.2em;
+}
+
+/******* FORMS ********/
+
+.form-horizontal div{
+    padding-top:2px;
+    padding-bottom: 2px;
+}
+
+
+/******* MAP ********/
+
+.action{
+    cursor:pointer;
+}
+
+.main-panel{
+    height:100%;
+}
+
+html, body {
+  margin:0;
+  padding:0;
+  overflow-x: hidden;
+}
