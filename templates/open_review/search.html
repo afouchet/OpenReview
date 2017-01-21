@@ -1,17 +1,36 @@
 {% extends "open_review/base.html" %}
 {% block body %}
 
+<table>
+  <tr>
+    <td style="padding-right:10px">
+      <label for="input-3" class="control-label">Likes</label>
+    </td>
+    <td>
+      <input id="input-3" name="input-3" value="4" class="rating-loading">
+    </td>
+  </tr>
+</table>
+
 <div class="container">
-   <div class="row">
+   <div class="row equal">
      {% for publi in publications %}
      <div class="panel-group col-lg-3 col-md-4 col-xs-6">
        <div class="panel panel-primary">
          <div class="panel-heading">
-           <a href="{% url 'open_review:article_desc' publi.id %}">{{ publi.title }}</a></br>
+           <a href="{% url 'open_review:article_desc' publi.id %}">{{ publi.title | truncatechars:100 }}</a></br>
          </div>
          <div class="panel-body">
            Authors: {{ publi.authors |truncatechars:100 }}
          </div>
+         <div class="panel-footer">
+	   {% if publi.nb_comments %}
+  	     <label for="rating-{{ publi.id }}" class="control-label">{{ publi.nb_comments }} ratings</label>
+  	     <input id="rating-{{ publi.id }}" name="rating-{{ publi.id }}" value="{{ publi.rating }}" class="rating-loading">
+	   {% else %}
+	     No comment yet !
+	   {% endif %}
+	 </div>
        </div>
      </div>
      {% endfor %}
@@ -26,5 +45,14 @@
 	<button>Next page</button>
       </form>
 </div>
+
+<script>
+  $(document).on('ready', function(){
+      $('#input-3').rating({displayOnly: true, step: 0.5});
+      {% for publi in publications %}
+          $('#rating-{{ publi.id }}').rating({displayOnly: true, step: 0.5});
+      {% endfor %}
+  });
+</script>
 
 {% endblock %}
