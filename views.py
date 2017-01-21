@@ -8,6 +8,10 @@ from django.shortcuts import render
 from .models import Profile, User, Publication, PubliComment
 from .services import fetch_publications
 
+def test(request):
+    return render(request, 'open_review/test.html')
+
+
 def welcome(request):
     return render(request, 'open_review/welcome.html')
 
@@ -98,6 +102,7 @@ def search(request):
         search_query=request.POST['search_query'],
         page=int(request.POST['page']),
         page_size=int(request.POST['page_size']))
+    # Make function to display rating for each publication
     return render(request, 'open_review/search.html', {
         'publications': publications,
         'next_page': int(request.POST['page']) + 1,
@@ -137,8 +142,11 @@ def comment_publi(request, publi_id):
         rating_field_contribution=request.POST['rating_field_contribution'],
         rating_methodology=request.POST['rating_methodology'],
     ).save()
+    rating = float(request.POST['rating_overall'])
+    publi.rating = (publi.rating * publi.nb_comments + rating) / (publi.rating + 1)
+    publi.nb_comments += 1
+    publi.save()
     return publication_detail(request, publi_id)
-
 
 
 @login_required(login_url='/open_review/login/')

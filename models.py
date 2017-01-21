@@ -29,6 +29,8 @@ class Publication(models.Model):
     source = models.CharField(max_length=200)  # Name of book, journal
     title = models.CharField(max_length=2000)
     db = models.CharField(max_length=200)
+    rating = models.FloatField()
+    nb_comments = models.IntegerField()
 
 
 KNOWN_ID_TYPE = {'pubmed', 'pii', 'doi', 'pmc', 'mid', 'rid', 'eic', 'pmcid'}
