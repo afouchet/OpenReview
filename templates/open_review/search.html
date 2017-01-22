@@ -1,17 +1,13 @@
 {% extends "open_review/base.html" %}
+{% load staticfiles %}
 {% block body %}
 
-<table>
-  <tr>
-    <td style="padding-right:10px">
-      <label for="input-3" class="control-label">Likes</label>
-    </td>
-    <td>
-      <input id="input-3" name="input-3" value="4" class="kv-ltr-theme-fa-star rating-loading">
-    </td>
-  </tr>
-</table>
+<script>
+  $.fn.raty.defaults.path = "{% static 'raty/lib/images/' %}";
+</script>
 
+
+<div id="raty-rating"></div>
 <div class="container">
    <div class="row equal">
      {% for publi in publications %}
@@ -25,8 +21,11 @@
          </div>
          <div class="panel-footer">
 	   {% if publi.nb_comments %}
-  	     <label for="rating-{{ publi.id }}" class="control-label">{{ publi.nb_comments }} ratings</label>
-  	     <input id="rating-{{ publi.id }}" name="rating-{{ publi.id }}" value="{{ publi.rating }}" class="kv-ltr-theme-fa-star rating-loading" data-size="xs">
+	     <div id="rating-{{ publi.id }}">{{ publi.nb_comments }} ratings: </div>
+	     <!-- This script is making the star rating icons -->
+             <script>
+               $('#rating-{{ publi.id }}').raty({ readOnly: true, score: {{ publi.rating }} });
+             </script>
 	   {% else %}
 	     No comment yet !
 	   {% endif %}
@@ -47,16 +46,9 @@
 </div>
 
 <script>
-  $(document).on('ready', function(){
-      $('.kv-ltr-theme-fa-star').rating({
-          hoverOnClear: false,
-          theme: 'krajee-fa'
-      });
-      $('#input-3').rating({displayOnly: true, step: 0.5});
-      {% for publi in publications %}
-          $('#rating-{{ publi.id }}').rating({displayOnly: true, step: 0.5});
-      {% endfor %}
-  });
+
+  $('#default').raty();
+
 </script>
 
 {% endblock %}
