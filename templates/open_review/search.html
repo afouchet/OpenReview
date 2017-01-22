@@ -7,7 +7,7 @@
       <label for="input-3" class="control-label">Likes</label>
     </td>
     <td>
-      <input id="input-3" name="input-3" value="4" class="rating-loading">
+      <input id="input-3" name="input-3" value="4" class="kv-ltr-theme-fa-star rating-loading">
     </td>
   </tr>
 </table>
@@ -26,7 +26,7 @@
          <div class="panel-footer">
 	   {% if publi.nb_comments %}
   	     <label for="rating-{{ publi.id }}" class="control-label">{{ publi.nb_comments }} ratings</label>
-  	     <input id="rating-{{ publi.id }}" name="rating-{{ publi.id }}" value="{{ publi.rating }}" class="rating-loading">
+  	     <input id="rating-{{ publi.id }}" name="rating-{{ publi.id }}" value="{{ publi.rating }}" class="kv-ltr-theme-fa-star rating-loading" data-size="xs">
 	   {% else %}
 	     No comment yet !
 	   {% endif %}
@@ -48,6 +48,10 @@
 
 <script>
   $(document).on('ready', function(){
+      $('.kv-ltr-theme-fa-star').rating({
+          hoverOnClear: false,
+          theme: 'krajee-fa'
+      });
       $('#input-3').rating({displayOnly: true, step: 0.5});
       {% for publi in publications %}
           $('#rating-{{ publi.id }}').rating({displayOnly: true, step: 0.5});
