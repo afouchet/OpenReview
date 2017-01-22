@@ -1,19 +1,33 @@
 {% extends "open_review/base.html" %}
+{% load staticfiles %}
 {% block body %}
 
+<script>
+  $.fn.raty.defaults.path = "{% static 'raty/lib/images/' %}";
+</script>
+
+<!-- This script is making the star rating icons -->
 <div class="container">
   <h1>{{ publication.title }}</h1>
   <div class="container">
-    <b>Abstract: </b> {{ abstract }} </br>
-    <b>Authors: </b> {{ publication.authors }}
+    <div> Number of reviews: {{ publication.publicomment_set.count }} <div>
+    <div id="rating_global">Overall rating: </div>
+    <script>
+      $('#rating_global').raty({ readOnly: true, score: {{ rating_overall }} });
+    </script>
+    <div id="rating_contribution">Contribution to field rating: </div>
+    <script>
+      $('#rating_contribution').raty({ readOnly: true, score: {{ rating_field_contribution }} });
+    </script>
+    <div id="rating_method">Methodological robustness rating: </div>
+    <script>
+      $('#rating_method').raty({ readOnly: true, score: {{ rating_methodology }} });
+    </script>
+    </div>
   </div>
   <div class="container">
-    <div>
-      Number of reviews: {{ publication.publicomment_set.count }}
-      Overall rating: {{ rating_overall }} / 5 </br>
-      Contribution to field rating: {{ rating_field_contribution }} / 5 </br>
-      Methodological robustness rating: {{ rating_methodology }} / 5 </br>
-    </div>
+    <b>Abstract: </b> {{ abstract }} </br>
+    <b>Authors: </b> {{ publication.authors }}
   </div>
   <div class="panel-group">
   {% for comment in publication.publicomment_set.all %}
@@ -22,13 +36,20 @@
 	{{ comment.author.first_name }} {{ comment.author.last_name }}
       </div>
       <div class="panel-body">
+        <div id="rating_global_{{ comment.id }}">Overall rating: </div>
+        <script>
+          $('#rating_global_{{ comment.id }}').raty({ readOnly: true, score: {{ comment.rating_overall }} });
+        </script>
+        <div id="rating_contribution_{{ comment.id }}">Contribution to field rating: </div>
+        <script>
+          $('#rating_contribution_{{ comment.id }}').raty({ readOnly: true, score: {{ comment.rating_field_contribution }} });
+        </script>
+        <div id="rating_method_{{ comment.id }}">Methodological robustness rating: </div>
+        <script>
+          $('#rating_method_{{ comment.id }}').raty({ readOnly: true, score: {{ comment.rating_methodology }} });
+        </script>
 	<div>
 	  {{ comment.text }}
-	</div>
-	<div>
-          Overall rating: {{ comment.rating_overall }} / 5 </br>
-          Contribution to field rating: {{ comment.rating_field_contribution }} / 5 </br>
-          Methodological robustness rating: {{ comment.rating_methodology }} / 5 </br>
 	</div>
       </div>
     </div>
@@ -39,16 +60,34 @@
     {% csrf_token %}
       <legend> What did you think of this article?</legend>
       <div class="form-group">
-        <label class="col-md-12 control-label">Rating overall</label>
-        <input name="rating_overall" class="form-control"  type="range" min="0" max="5">
-      </div>
-      <div class="form-group">
-        <label class="col-md-12 control-label">Rating field contribution</label>
-        <input name="rating_field_contribution" class="form-control"  type="range" min="0" max="5">
-      </div>
-      <div class="form-group">
-        <label class="col-md-12 control-label">Rating methodology</label>
-        <input name="rating_methodology" class="form-control"  type="range" min="0" max="5">
+        <div id="new_rating_global">Rating overall: </div>
+        <script>
+          $('#new_rating_global').raty({
+            click: function(score, evt) {
+	      $('#form_rating_overall').val(score);
+            }
+          });
+        </script>
+        <input id="form_rating_overall" name="rating_overall" type="hidden">
+        <div id="new_rating_contribution">Contribution to field rating: </div>
+        <script>
+          $('#new_rating_contribution').raty({
+            click: function(score, evt) {
+	      $('#form_rating_field_contribution').val(score);
+            }
+          });
+        </script>
+        <input id="form_rating_field_contribution" name="rating_field_contribution"  type="hidden">
+        <div id="new_rating_method">Methodological robustness rating: </div>
+        <script>
+          $('#new_rating_method').raty({
+            click: function(score, evt) {
+	      $('#form_rating_method').val(score);
+            }
+          });
+        </script>
+        <input id="form_rating_method" name="rating_methodology" type="hidden">
+        <label class="col-md-12 control-label"></label>
       </div>
       <div class="form-group">
         <label class="col-md-12 control-label">Review</label>
