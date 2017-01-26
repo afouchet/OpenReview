@@ -1,0 +1,15 @@
+* CSS
+** Page results
+*** As thumbnail, with min height and truncate
+*** As google list of results
+** DONE Search bar
+*** In navbar
+https://designmodo.com/create-drop-down-menu-search-box/
+*** In body
+http://cssdeck.com/labs/0chmqae2
+*** In body, more serious
+https://blog.udemy.com/search-box-css
+
+
+** Navbar plus stylée
+*** Bootstrap 4?
