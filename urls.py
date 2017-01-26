@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'^logout/$', views.api_logout, name='logout'),
     url(r'^log/$', views.log, name='logs'),
     url(r'^search/$', views.search, name='search'),
+    url(r'^test/$', views.test, name='test'),
 ]
