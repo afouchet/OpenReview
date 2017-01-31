@@ -9,31 +9,21 @@
 
 <div id="raty-rating"></div>
 <div class="container">
-   <div class="row equal">
-     {% for publi in publications %}
-     <div class="panel-group col-lg-3 col-md-4 col-xs-6">
-       <div class="panel panel-primary">
-         <div class="panel-heading">
-           <a href="{% url 'open_review:article_desc' publi.id %}">{{ publi.title | truncatechars:100 }}</a></br>
-         </div>
-         <div class="panel-body">
-           Authors: {{ publi.authors |truncatechars:100 }}
-         </div>
-         <div class="panel-footer">
-	   {% if publi.nb_comments %}
-	     <div id="rating-{{ publi.id }}">{{ publi.nb_comments }} ratings: </div>
-	     <!-- This script is making the star rating icons -->
-             <script>
-               $('#rating-{{ publi.id }}').raty({ readOnly: true, score: {{ publi.rating }} });
-             </script>
-	   {% else %}
-	     No comment yet !
-	   {% endif %}
-	 </div>
-       </div>
-     </div>
-     {% endfor %}
+   {% for publi in publications %}
+   <div class="row search_result">
+     <a href="{% url 'open_review:article_desc' publi.id %}">{{ publi.title }}</a></br>
+     Authors: {{ publi.authors }} </br>
+     {% if publi.nb_comments %}
+       <div id="rating-{{ publi.id }}">{{ publi.nb_comments }} ratings: </div>
+         <!-- This script is making the star rating icons -->
+         <script>
+           $('#rating-{{ publi.id }}').raty({ readOnly: true, score: {{ publi.rating }} });
+         </script>
+     {% else %}
+	No comment yet !
+     {% endif %}
    </div>
+   {% endfor %}
 </div>
 <div class="pull-right">
       <form action="{% url 'open_review:search' %}" method="post" class="form-inline">

@@ -11,3 +11,17 @@ body { padding-top: 140px; }
 i.fa-star {
     color:orange;
 }
+
+.thumbnail {
+    padding: 10px;
+}
+
+.search_result {
+    font-size:large;
+    margin-bottom: 20px;
+}
+
+.search_result a {
+    font-weight: bold;
+
+}
