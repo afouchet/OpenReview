@@ -63,10 +63,40 @@ def get_abstract(publication):
         url += 'db={db}&retmode=text&rettype=abstract&id={id}'.format(
             db=publication.db, id=getattr(publication, 'id_' + publication.db))
         publication.abstract = requests.get(url, params=PARAMS).content
+        publication.summary = summarize_abstract(publication.abstract)
         publication.save()
     return publication.abstract
     
 PARAMS = {'email': 'arnaud.fouchet@dolead.com', 'tool': 'OpenReview'}
     
+def summarize_abstract(abstract):
+    """
+    Pubmeb always returns abstract in this format:
+    "
+    ''
+    Journal
+    ''
+    Title
+    ''
+    Authors
+    ''
+    Author information
+    ''
+    real abstract
+    ''
+    DOI
+    PMID
+    ''
+    ''
+    """
+    blanks = 0
+    lines = []
+    for line in abstract.split('\n'):
+        if line == u'':
+            blanks += 1
+        elif blanks == 5:
+            lines.append(line)
+
+    return '\n'.join(lines)
 
 

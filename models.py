@@ -27,6 +27,7 @@ class Publication(models.Model):
     available_url = models.CharField(max_length=2000)
     type = models.CharField(max_length=200)  # Book or journal or ...
     source = models.CharField(max_length=200)  # Name of book, journal
+    summary = models.CharField(max_length=5000, default='')  # Can be "Has abstract"
     title = models.CharField(max_length=2000)
     db = models.CharField(max_length=200)
     rating = models.FloatField(default=0)
