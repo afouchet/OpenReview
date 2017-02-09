@@ -13,6 +13,7 @@
    <div class="row search_result">
      <a href="{% url 'open_review:article_desc' publi.id %}">{{ publi.title }}</a></br>
      Authors: {{ publi.authors }} </br>
+     Abstract: {{ publi.summary | linebreaks | truncatechars:300}} </br>
      {% if publi.nb_comments %}
        <div id="rating-{{ publi.id }}">{{ publi.nb_comments }} ratings: </div>
          <!-- This script is making the star rating icons -->
@@ -31,7 +32,7 @@
 	<input type="hidden" name="search_query" value="{{ search_query }}">
 	<input type="hidden" name="page" value="{{ next_page }}">
 	<input type="hidden" name="page_size" value="{{ page_size }}">
-	<button>Next page</button>
+	<button class="btn btn-secondary active">Next page</button>
       </form>
 </div>
 
