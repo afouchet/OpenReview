@@ -3,13 +3,13 @@
     <div class="navbar-header">
       <a class="navbar-brand" href={% url 'open_review:homepage' %} style="display: inline">OpenReview</a>
       <ul class="nav navbar-nav">
-        <li>
+        <li class="navbar_search_li">
 	  <form action="{% url 'open_review:search' %}" method="post" class="form-inline">
         	{% csrf_token %}
-        	<input name="search_query" type="text" placeholder="Search PubMed">
+        	<input name="search_query" type="text" placeholder="Search PubMed" class="navbar_search_text">
         	<input type="hidden" name="page" value="0">
         	<input type="hidden" name="page_size" value="20">
-        	<button>Search</button>
+	    <button class="navbar_search_button"><i class="fa fa-search"></i></button>
           </form>
 	</li>
 	{% if request.user.id %}
