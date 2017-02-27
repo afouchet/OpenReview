@@ -7,9 +7,10 @@
       <caption>Advanced search</caption>
       <thead>
         <tr>
-    	<td></td>
+    	  <td></td>
           <td>Field</td>
           <td>Matching</td>
+	  <td></td>
         </tr>
       </thead>
       <tbody id="body_advanced_search">
@@ -70,24 +71,48 @@
 }
 
 function cellInput() {
+    var cell_input = document.createElement("td")
     var input_field = document.createElement("input")
     input_field.type = "text"
     input_field.name = "criteria[]"
-    return input_field
+    cell_input.appendChild(input_field)
+    return cell_input
 }
+
+function cellButtonAddRow() {
+    var cell_button = document.createElement("td")
+    var button = document.createElement("i")
+    button.className = "fa fa-plus-circle fa-2x"
+    button.style = "color:green"
+    button.setAttribute("aria-hidden", "true")
+    button.onclick = function() {
+      button.className = "fa fa-minus-circle fa-2x"
+      button.style = "color:red"
+      button.onclick = function() {
+        row = button.parentNode.parentNode			    
+        row.parentNode.removeChild(row)
+      }
+      addSearchField()
+    }
+			    
+    cell_button.appendChild(button)
+    return cell_button
+}
+
 
   function addSearchField() {
     var form = document.getElementById("body_advanced_search");
     var table_row = document.createElement("tr");
 
     var cell_link = cellLink()
-
     var cell_field = cellField()
     var cell_input = cellInput()
+    var cell_button = cellButtonAddRow()
 
     table_row.appendChild(cell_link)
     table_row.appendChild(cell_field)
     table_row.appendChild(cell_input)
+    table_row.appendChild(cell_button)
     form.appendChild(table_row)
 
 }
