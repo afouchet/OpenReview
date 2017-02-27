@@ -1,0 +1,99 @@
+{% extends "open_review/base.html" %}
+{% block body %}
+
+<section>
+  <form action="{% url 'open_review:advanced_search' %}" method="post" class="col-lg-6 col-md-6" id="form_advanced_search">
+    <table class="table table-bordered table-hover table-condensed">
+      <caption>Advanced search</caption>
+      <thead>
+        <tr>
+    	<td></td>
+          <td>Field</td>
+          <td>Matching</td>
+        </tr>
+      </thead>
+      <tbody id="body_advanced_search">
+      </tbody>
+    </table>
+  </form>
+</section>
+
+<script>
+  function cellLink() {
+    var cell_link = document.createElement("td")
+    var input_link = document.createElement("select")
+    input_link.name = "link[]"
+
+    var options = ["AND", "OR", "NOT"]
+    var opt
+    var index
+    for (index = 0; index < options.length; ++index) {
+      opt = options[index]
+      var connector = document.createElement("option")
+      connector.value = opt
+      connector.innerHTML = opt
+      input_link.appendChild(connector)
+    }
+
+    cell_link.appendChild(input_link)
+    return cell_link
+}
+
+  function cellField() {
+    var cell_field = document.createElement("td")
+    var input_field = document.createElement("select")
+    input_field.name = "field[]"
+
+    var options = [
+      "All Fields", "Affiliation", "Author", "Author - Corporate",
+      "Author - First", "Author - Full", "Author - Identifier", "Author - Last",
+      "Book", "Conflict of Interest Statements", "Date - Completion",
+      "Date - Create", "Date - Entrez", "Date - MeSH", "Date - Modification",
+      "Date - Publication", "EC/RN Number", "Editor", "Filter", "Grant Number",
+      "ISBN", "Investigator", "Investigator - Full", "Issue", "Journal",
+      "Language", "Location ID", "MeSH Major Topic", "MeSH Subheading",
+      "MeSH Terms", "Other Term", "Pagination", "Pharmacological Action",
+      "Publication Type", "Publisher", "Secondary Source ID",
+      "Subject - Personal Name", "Supplementary Concept", "Text Word", "Title",
+      "Title/Abstract", "Transliterated Title", "Volume"]
+    var opt
+    for (index = 0; index < options.length; ++index) {
+      opt = options[index]
+      var connector = document.createElement("option")
+      connector.value = opt
+      connector.innerHTML = opt
+      input_field.appendChild(connector)
+    }
+
+    cell_field.appendChild(input_field)
+    return cell_field
+}
+
+function cellInput() {
+    var input_field = document.createElement("input")
+    input_field.type = "text"
+    input_field.name = "criteria[]"
+    return input_field
+}
+
+  function addSearchField() {
+    var form = document.getElementById("body_advanced_search");
+    var table_row = document.createElement("tr");
+
+    var cell_link = cellLink()
+
+    var cell_field = cellField()
+    var cell_input = cellInput()
+
+    table_row.appendChild(cell_link)
+    table_row.appendChild(cell_field)
+    table_row.appendChild(cell_input)
+    form.appendChild(table_row)
+
+}
+
+addSearchField()
+
+</script>
+
+{% endblock %}
