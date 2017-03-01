@@ -15,15 +15,25 @@
       </thead>
       <tbody id="body_advanced_search">
       </tbody>
+      <tfoot>
+        <tr>
+	  <td></td>
+          <td><button class="btn btn-secondary active">Search</button></td>
+        </tr>
+      </tfoot>
     </table>
   </form>
 </section>
 
 <script>
+INDEX_ROW = 0
+
   function cellLink() {
     var cell_link = document.createElement("td")
+    cell_link.id = "cellLink_" + INDEX_ROW
     var input_link = document.createElement("select")
     input_link.name = "link[]"
+    input_link.className = "form-control"
 
     var options = ["AND", "OR", "NOT"]
     var opt
@@ -42,8 +52,10 @@
 
   function cellField() {
     var cell_field = document.createElement("td")
+    cell_field.id = "cellField_" + INDEX_ROW
     var input_field = document.createElement("select")
     input_field.name = "field[]"
+    input_field.className = "form-control"
 
     var options = [
       "All Fields", "Affiliation", "Author", "Author - Corporate",
@@ -72,6 +84,7 @@
 
 function cellInput() {
     var cell_input = document.createElement("td")
+    cell_input.id = "cellInput_" + INDEX_ROW
     var input_field = document.createElement("input")
     input_field.type = "text"
     input_field.name = "criteria[]"
@@ -103,6 +116,7 @@ function cellButtonAddRow() {
   function addSearchField() {
     var form = document.getElementById("body_advanced_search");
     var table_row = document.createElement("tr");
+    table_row.id = "tableRow_" + INDEX_ROW
 
     var cell_link = cellLink()
     var cell_field = cellField()
@@ -114,10 +128,13 @@ function cellButtonAddRow() {
     table_row.appendChild(cell_input)
     table_row.appendChild(cell_button)
     form.appendChild(table_row)
+    INDEX_ROW += 1
 
 }
 
 addSearchField()
+var first_cell_link = document.getElementById("cellLink_0");
+first_cell_link.innerHTML = ""
 
 </script>
 
