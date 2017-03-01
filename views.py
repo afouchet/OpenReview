@@ -9,7 +9,35 @@ from .models import Profile, User, Publication, PubliComment
 from .services import fetch_publications
 
 def test(request):
-    return render(request, 'open_review/test.html')
+    return render(request, 'open_review/test_2.html')
+
+
+def build_advanced_search(request):
+    return render(request, 'open_review/advanced_search.html')
+
+
+def advanced_search(request):
+    if not request.POST['field[]']:
+        # Empty request
+        return render(request, 'open_review/advanced_search.html')
+
+    fields = request.POST.getlist('field[]')
+    texts = request.POST.getlist('criteria[]')
+    links = request.POST.getlist('link[]', [])
+
+    search_query = texts.pop(0)
+    field = fields.pop(0)
+    if field != "All Fields":
+        search_query += '[' + field + ']'
+
+    for link, field, text in zip(links, fields, texts):
+        search_query = '({old_query}) {link} {text}'.format(old_query=search_query, link=link, text=text)
+        if field != "All Fields":
+            search_query += '[' + field + ']'
+
+    request.POST = request.POST.copy()
+    request.POST['search_query'] = search_query
+    return search(request)
 
 
 def welcome(request):
@@ -98,16 +126,23 @@ def edited_profile(request):
 
 
 def search(request):
-    publications = fetch_publications.get_publications(
+    nb_publi, publications = fetch_publications.get_publications(
         search_query=request.POST['search_query'],
         page=int(request.POST['page']),
         page_size=int(request.POST['page_size']))
     # Make function to display rating for each publication
+    page = int(request.POST['page'])
+    page_size = int(request.POST['page_size'])
+    first_pub = page * page_size + 1
+    last_pub = (page + 1) * page_size
     return render(request, 'open_review/search.html', {
+        'nb_publi': nb_publi,
+        'first_pub': first_pub,
+        'last_pub': last_pub,
         'publications': publications,
-        'next_page': int(request.POST['page']) + 1,
+        'next_page': page + 1,
         'search_query': request.POST['search_query'],
-        'page_size': int(request.POST['page_size']),
+        'page_size': page_size,
     })
     
 

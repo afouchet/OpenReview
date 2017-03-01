@@ -3,6 +3,7 @@
 
 <section>
   <form action="{% url 'open_review:advanced_search' %}" method="post" class="col-lg-6 col-md-6" id="form_advanced_search">
+  {% csrf_token %}
     <table class="table table-bordered table-hover table-condensed">
       <caption>Advanced search</caption>
       <thead>
@@ -22,6 +23,8 @@
         </tr>
       </tfoot>
     </table>
+    <input type="hidden" name="page" value="0">
+    <input type="hidden" name="page_size" value="20">
   </form>
 </section>
 
