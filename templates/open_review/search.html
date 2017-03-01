@@ -9,10 +9,17 @@
 
 <div id="raty-rating"></div>
 <div class="container">
+   <div class="row search_results">
+     Items: {{ first_pub }} - {{ last_pub }} of {{ nb_publi }}
+   </div>
    {% for publi in publications %}
    <div class="row search_result">
      <a href="{% url 'open_review:article_desc' publi.id %}">{{ publi.title }}</a></br>
      Authors: {{ publi.authors }} </br>
+     Source: {{ publi.source }} </br>
+     Publication date: {{ publi.pub_date }} </br>
+     DOI: {{ publi.id_doi }} </br>
+     PMID: {{ publi.id_pubmed }} </br>
      {% if publi.nb_comments %}
        <div id="rating-{{ publi.id }}">{{ publi.nb_comments }} ratings: </div>
          <!-- This script is making the star rating icons -->

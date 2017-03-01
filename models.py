@@ -25,13 +25,14 @@ class Publication(models.Model):
     attributes = models.CharField(max_length=1000)  # Can be "Has abstract"
     authors = models.CharField(max_length=20000)
     available_url = models.CharField(max_length=2000)
-    type = models.CharField(max_length=200)  # Book or journal or ...
+    db = models.CharField(max_length=200)
+    nb_comments = models.IntegerField(default=0)
+    pub_date = models.CharField(max_length=50)
+    rating = models.FloatField(default=0)
     source = models.CharField(max_length=200)  # Name of book, journal
     summary = models.CharField(max_length=5000, default='')  # Can be "Has abstract"
     title = models.CharField(max_length=2000)
-    db = models.CharField(max_length=200)
-    rating = models.FloatField(default=0)
-    nb_comments = models.IntegerField(default=0)
+    type = models.CharField(max_length=200)  # Book or journal or ...
 
 
 KNOWN_ID_TYPE = {'pubmed', 'pii', 'doi', 'pmc', 'mid', 'rid', 'eic', 'pmcid'}

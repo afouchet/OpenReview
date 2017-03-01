@@ -8,15 +8,18 @@ def get_publications(search_query, page=0, page_size=20, db='pubmed'):
     Get PubMed answer to search query, then loads the article from our database
     or we get them from pubmed's database
     """
-    publication_ids = _get_publication_ids(search_query, page, page_size, db)
-    return _get_publication(publication_ids, db)
+    publication_ids, nb_publi = _get_publication_ids(search_query, page, page_size, db)
+    return nb_publi, _get_publication(publication_ids, db)
 
 
 def _get_publication_ids(search_query, page=0, page_size=20, db='pubmeb'):
     url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?'
     url += 'db={db}&&term={search_query}&retstart={offset}&retmax={page_size}&retmode=json'.format(
         db=db, search_query=search_query, offset=page * page_size, page_size=page_size)
-    return requests.get(url, params=PARAMS).json()['esearchresult']['idlist']
+    res = requests.get(url, params=PARAMS).json()['esearchresult']
+    id_list = res['idlist']
+    nb_publi = res['count']
+    return id_list, nb_publi
 
 
 def _get_publication(publication_ids, db):
@@ -47,6 +50,7 @@ def _save_publi(publi_json, db):
     publi.authors = ', '.join(auth['name'] for auth in publi_json['authors']
                               if auth['authtype'] == 'Author')
     publi.available_url = publi_json['availablefromurl']
+    publi.pub_date = publi_json['pubdate']
     publi.type = publi_json['pubtype']
     publi.source = publi_json['source']
     publi.title = publi_json['title']
