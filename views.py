@@ -165,7 +165,7 @@ def publication_detail(request, publi_id):
         publis_similar = []
         publi_tags = {}
     similars = [(publi, publi_tags[publi.id]) for publi in publis_similar[:5]]
-    return render(request, 'open_review/desc_publi_2.html', {
+    return render(request, 'open_review/desc_publi.html', {
         'publication': publi,
         'similars': similars,
         'abstract': fetch_publications.get_abstract(publi),
