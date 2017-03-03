@@ -125,7 +125,7 @@ def get_abstract(publication):
         url = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?'
         url += 'db={db}&retmode=text&rettype=abstract&id={id}'.format(
             db=publication.db, id=getattr(publication, 'id_' + publication.db))
-        publication.abstract = request.get(url, params=PARAMS).content
+        publication.abstract = requests.get(url, params=PARAMS).content
         publication.summary = summarize_abstract(publication.abstract)
         publication.save()
     return publication.abstract
