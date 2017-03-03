@@ -158,8 +158,16 @@ def publication_detail(request, publi_id):
         rating_overall = sum(comment.rating_overall for comment in comments) / nb_comments
         rating_field_contribution = sum(comment.rating_field_contribution for comment in comments) / nb_comments
         rating_methodology = sum(comment.rating_methodology for comment in comments) / nb_comments
-    return render(request, 'open_review/desc_publi.html', {
+    
+    try:
+        publis_similar, publi_tags = fetch_publications.get_similars(publi.id_pubmed)
+    except KeyError, IndexError:
+        publis_similar = []
+        publi_tags = {}
+    similars = [(publi, publi_tags[publi.id]) for publi in publis_similar[:5]]
+    return render(request, 'open_review/desc_publi_2.html', {
         'publication': publi,
+        'similars': similars,
         'abstract': fetch_publications.get_abstract(publi),
         'rating_overall': rating_overall,
         'rating_field_contribution': rating_field_contribution,
