@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.core.validators import validate_email
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 
 from .models import Profile, User, Publication, PubliComment
@@ -147,8 +147,8 @@ def search(request):
     
 
 def publication_detail(request, publi_id):
-    publi = Publication.objects.get(pk=publi_id)
-    comments = publi.publicomment_set.all()
+    publication = Publication.objects.get(pk=publi_id)
+    comments = publication.publicomment_set.all()
     nb_comments = comments.count()
     if not nb_comments:
         rating_overall = 0
@@ -160,13 +160,13 @@ def publication_detail(request, publi_id):
         rating_methodology = sum(comment.rating_methodology for comment in comments) / nb_comments
     
     try:
-        publis_similar, publi_tags = fetch_publications.get_similars(publi.id_pubmed)
+        publis_similar, publi_tags = fetch_publications.get_similars(publication.id_pubmed)
     except KeyError, IndexError:
         publis_similar = []
         publi_tags = {}
     similars = [(publi, publi_tags[publi.id]) for publi in publis_similar[:5]]
     return render(request, 'open_review/desc_publi.html', {
-        'publication': publi,
+        'publication': publication,
         'similars': similars,
         'abstract': fetch_publications.get_abstract(publi),
         'rating_overall': rating_overall,
@@ -174,6 +174,17 @@ def publication_detail(request, publi_id):
         'rating_methodology': rating_methodology,
         })
 
+
+def api_similar_articles(request, publi_id):
+    limit = int(request.GET['limit'])
+    publication = Publication.objects.get(pk=publi_id)
+    try:
+        publis_similar, publi_tags = fetch_publications.get_similars(publication.id_pubmed)
+    except KeyError, IndexError:
+        publis_similar = []
+        publi_tags = {}
+    similars = [dict(publi.dump(), tags=publi_tags[publi.id]) for publi in publis_similar[:limit]]
+    return JsonResponse(similars, safe=False)
 
 def comment_publi(request, publi_id):
     publi = Publication.objects.get(pk=publi_id)
