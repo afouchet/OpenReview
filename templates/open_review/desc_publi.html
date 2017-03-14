@@ -42,6 +42,12 @@
         <hr>
       {% endfor %}
     </div>
+    <div class="col-lg-4 col-md-4 col-xs-4">
+      Similar articles</br>
+      <hr>
+      <div id="similar-articles">
+      </div>
+    </div>
   </div>
 </div>
 
@@ -120,4 +126,40 @@
 {% endif %}
 </div>
 
+<script>
+  div_similar = document.getElementById("similar-articles");
+  div_similar.innerHTML = "<i class='fa fa-spinner fa-spin fa-2x'></i>";
+
+  var post_request = {'page': 0, 'page_size': 5};
+  $.ajax({
+    url: "{% url 'open_review:api_similar_articles' publication.id %}?limit=5",
+    type: 'GET',
+    success: function(data, status, xhr) {
+      var count = len(data);
+      var publi;
+      div_similar.innerHTML = "";
+      for (var i=0;i < count; i++){
+	publi = data[i]
+        var row = document.createElement('a');
+        row.href = "/open_review/desc/" + publi['id'];
+        row.innerHTML = publi['title'];
+        div_similar.appendChild(row);
+        var text = document.createTextNode("</br>[" + publi['source'] + ", " + publi['pub_date']  + "]");
+        div_similar.appendChild(text);
+	if (-1 < publi['tags'].indexOf('pubmed_pubmed_reviews')) {
+          var span = document.createElement('span');
+          span.innerHTML = "Review";
+          span.classList.add("badge");
+          div_similar.append(span)
+	}
+        var text = document.createTextNode("</br><hr>");
+        div_similar.appendChild(text);
+      }
+    },
+    error: function(exception){
+      alert('Exception:' + exception);
+    },
+  })
+  alert("I'm alerting you");
+</script>
 {% endblock %}
