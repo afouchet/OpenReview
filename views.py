@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.core.validators import validate_email
-from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 
 from .models import Profile, User, Publication, PubliComment
@@ -175,20 +175,9 @@ def publication_detail(request, publi_id):
         })
 
 
-def api_similar_articles(request, publi_id):
-    limit = int(request.GET['limit'])
-    publication = Publication.objects.get(pk=publi_id)
-    try:
-        publis_similar, publi_tags = fetch_publications.get_similars(publication.id_pubmed)
-    except KeyError, IndexError:
-        publis_similar = []
-        publi_tags = {}
-    similars = [dict(publi.dump(), tags=publi_tags[publi.id]) for publi in publis_similar[:limit]]
-    return JsonResponse(similars, safe=False)
-
-
 def api_full_text_link(request, publi_id):
-    return HttpResponse(fetch_publications.get_full_text_link(publi_id))
+    return JsonResponse({'link': fetch_publications.get_full_text_link(publi_id)})
+
 
 def comment_publi(request, publi_id):
     publi = Publication.objects.get(pk=publi_id)
