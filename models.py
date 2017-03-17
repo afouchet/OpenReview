@@ -52,11 +52,3 @@ class PubliComment(models.Model):
     rating_overall = models.FloatField(choices=RATINGS)
     rating_field_contribution = models.FloatField(choices=RATINGS)
     rating_methodology = models.FloatField(choices=RATINGS)
-
-class LinkPMCPublication(models.Model):
-    id_pmc = models.CharField(max_length=200, primary_key=True)
-    link = models.CharField(max_length=200)
-    article = models.CharField(max_length=200)
-    id_access = models.CharField(max_length=200)
-    license = models.CharField(max_length=200)
-    update = models.DateTimeField(max_length=200)
