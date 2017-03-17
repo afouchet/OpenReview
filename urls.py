@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^build_advanced_search/$', views.build_advanced_search, name='build_advanced_search'),
     url(r'^advanced_search/$', views.advanced_search, name='advanced_search'),
     url(r'^test/$', views.test, name='test'),
+    url(r'^api/full_text_link/(?P<publi_id>[0-9]+)$', views.api_full_text_link, name='api_full_text_link'),
 ]

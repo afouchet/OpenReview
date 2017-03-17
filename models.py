@@ -34,6 +34,10 @@ class Publication(models.Model):
     title = models.CharField(max_length=2000)
     type = models.CharField(max_length=200)  # Book or journal or ...
 
+    def dump(self):
+        fields = ['id', 'title', 'authors', 'source', 'pub_date']
+        return {f: getattr(self, f) for f in fields}
+
 
 KNOWN_ID_TYPE = {'pubmed', 'pii', 'doi', 'pmc', 'mid', 'rid', 'eic', 'pmcid'}
 

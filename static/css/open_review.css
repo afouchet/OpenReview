@@ -71,3 +71,7 @@ i.fa-star {
     height: 45px;
     cursor: pointer;
 }
+
+.badge {
+    background: #e68a00;
+}

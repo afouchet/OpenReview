@@ -30,17 +30,25 @@
         </div>
     </div>
     <div class="col-lg-4 col-md-4 col-xs-4">
-      Similar articles</br>
-      <hr>
-      {% for publi, tags in similars %}
-        <a href="{% url 'open_review:article_desc' publi.id %}">{{ publi.title }}</a></br>
-	[{{ publi.source }}, {{ publi.pub_date }}]
-	{% if 'pubmed_pubmed_reviews' in tags %}
-	  <span class="badge">Review</span>
-	{% endif %}
-	</br>
+      <div>
+        Full text link</br>
         <hr>
-      {% endfor %}
+        <div id="full-text-link">
+        </div>
+      </div>
+    <div>
+        Similar articles</br>
+        <hr>
+        {% for publi, tags in similars %}
+          <a href="{% url 'open_review:article_desc' publi.id %}">{{ publi.title }}</a></br>
+      	[{{ publi.source }}, {{ publi.pub_date }}]
+      	{% if 'pubmed_pubmed_reviews' in tags %}
+      	  <span class="badge">Review</span>
+      	{% endif %}
+      	</br>
+          <hr>
+        {% endfor %}
+      </div>
     </div>
   </div>
 </div>
@@ -120,4 +128,20 @@
 {% endif %}
 </div>
 
+<script>
+  div_link = document.getElementById("full-text-link");
+  div_link.innerHTML = "<i class='fa fa-spinner fa-spin fa-2x'></i>";
+
+  var post_request = {'page': 0, 'page_size': 5};
+  $.ajax({
+    url: "{% url 'open_review:api_full_text_link' publication.id %}",
+    type: 'GET',
+    success: function(data, status, xhr) {
+      div_link.innerHTML = data['link'];
+    },
+    error: function(exception){
+      alert('Exception:' + exception);
+    },
+  })
+</script>
 {% endblock %}

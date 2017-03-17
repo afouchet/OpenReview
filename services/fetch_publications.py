@@ -8,15 +8,22 @@ from ..models import Publication, KNOWN_ID_TYPE
 
 REDIS_DB = StrictRedis(db=0)
 
-def request_cache(url, params=None, ttl_callback=None):
+def request_cache(url, params=None, ttl_callback=None, is_json=True):
     redis_key = url + 'params=' + str(params)
     res = REDIS_DB.get(redis_key)
     if res:
-        # Json doesn't handle single quote encoding
-        # Need to use ast
-        return ast.literal_eval(res)
+        if is_json:
+            # Json doesn't handle single quote encoding
+            # Need to use ast
+            return ast.literal_eval(res)
+        else:
+            return res
 
-    res = requests.get(url, params=params).json()
+    res = requests.get(url, params=params)
+    if is_json:
+        res = res.json()
+    else:
+        res = res.content
     if not ttl_callback:
         ttl = 3600 * 24 * 31
     else:
@@ -163,3 +170,19 @@ def summarize_abstract(abstract):
     return '\n'.join(lines)
 
 
+
+def get_full_text_link(publication_id):
+    publi = Publication.objects.get(pk=publication_id)
+    url = 'https://www.ncbi.nlm.nih.gov/pubmed/{}'.format(publi.id_pubmed)
+    res = request_cache(url, params=PARAMS, is_json=False)
+    try:
+        start_link = res.index('<h3><span>Full text links</span>')
+    except ValueError:
+        return ''
+
+    link = res[start_link:]
+    start_link = link.index('<a href')
+    start_img = link.index('<img ')
+    end_img = link[start_img:].index('>')
+    return link[start_link:start_img + end_img + 1]
+    
