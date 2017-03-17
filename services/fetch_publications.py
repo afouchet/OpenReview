@@ -12,9 +12,12 @@ def request_cache(url, params=None, ttl_callback=None, is_json=True):
     redis_key = url + 'params=' + str(params)
     res = REDIS_DB.get(redis_key)
     if res:
-        # Json doesn't handle single quote encoding
-        # Need to use ast
-        return ast.literal_eval(res)
+        if is_json:
+            # Json doesn't handle single quote encoding
+            # Need to use ast
+            return ast.literal_eval(res)
+        else:
+            return res
 
     res = requests.get(url, params=params)
     if is_json:
