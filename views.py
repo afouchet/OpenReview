@@ -164,6 +164,8 @@ def publication_detail(request, publi_id):
     except KeyError, IndexError:
         publis_similar = []
         publi_tags = {}
+
+    user_commented = {comment.author.id for comment in comments}
     similars = [(publi, publi_tags[publi.id]) for publi in publis_similar[:5]]
     return render(request, 'open_review/desc_publi.html', {
         'publication': publication,
@@ -172,6 +174,7 @@ def publication_detail(request, publi_id):
         'rating_overall': rating_overall,
         'rating_field_contribution': rating_field_contribution,
         'rating_methodology': rating_methodology,
+        'user_commented': user_commented,
         })
 
 
