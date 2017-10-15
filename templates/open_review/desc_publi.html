@@ -82,7 +82,7 @@
   </div>
 </div>
 {% if request.user.id %}
-  <form action="{% url 'open_review:comment' publication.id %}" method="post" class="col-lg-12 col-md-12 col-xs-12">
+  <form action="{% url 'open_review:comment' publication.id %}" method="post" class="col-lg-12 col-md-12 col-xs-12" onsubmit="return validateComment()" name="form_new_comment">
   {% csrf_token %}
     <legend> What did you think of this article?</legend>
     <div class="form-group">
@@ -144,4 +144,17 @@
     },
   })
 </script>
+<script>
+  function validateComment(){
+    var x = document.forms["form_new_comment"]
+    var fields_mandatory = ["rating_field_contribution", "rating_overall", "rating_methodology"]
+    for (var i = 0; i < fields_mandatory.length; i++){
+      if (x[fields_mandatory[i]].value == "") {
+        alert("Please fill ratings overall, contribution to field and methodological robustness")
+        return false
+      }
+    }
+  }
+</script>
+  
 {% endblock %}
