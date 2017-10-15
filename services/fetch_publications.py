@@ -42,8 +42,8 @@ def get_publications(search_query, page=0, page_size=20, db='pubmed'):
 
 
 def get_similars(article_id, db='pubmed'):
-    url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?'
-    url += 'db={db}&id={article_id}&cmd=neighbor_score&retmode=json'.format(db=db, article_id=article_id)
+    url = u'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?'
+    url += u'db={db}&id={article_id}&cmd=neighbor_score&retmode=json'.format(db=db, article_id=article_id)
 
     def ttl(result):
         try:
@@ -79,8 +79,8 @@ def get_similars(article_id, db='pubmed'):
 
 
 def _get_publication_ids(search_query, page=0, page_size=20, db='pubmeb'):
-    url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?'
-    url += 'db={db}&&term={search_query}&retstart={offset}&retmax={page_size}&retmode=json'.format(
+    url = u'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?'
+    url += u'db={db}&&term={search_query}&retstart={offset}&retmax={page_size}&retmode=json'.format(
         db=db, search_query=search_query, offset=page * page_size, page_size=page_size)
     res = request_cache(url, params=PARAMS)['esearchresult']
     id_list = res['idlist']
@@ -99,8 +99,8 @@ def _get_publication(publication_ids, db):
 
 
 def _load_publication(publication_ids, db):
-    url = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?'
-    url += 'db={db}&retmode=json&rettype=abstract&id={id_list}'.format(
+    url = u'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?'
+    url += u'db={db}&retmode=json&rettype=abstract&id={id_list}'.format(
         db=db, id_list=','.join(publication_ids))
     res = request_cache(url, params=PARAMS)['result']
     res.pop('uids', None)
@@ -129,8 +129,8 @@ def get_abstract(publication):
     if 'Has Abstract' not in publication.attributes:
         return 'Not available'
     if not publication.abstract:
-        url = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?'
-        url += 'db={db}&retmode=text&rettype=abstract&id={id}'.format(
+        url = u'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?'
+        url += u'db={db}&retmode=text&rettype=abstract&id={id}'.format(
             db=publication.db, id=getattr(publication, 'id_' + publication.db))
         publication.abstract = requests.get(url, params=PARAMS).content
         publication.summary = summarize_abstract(publication.abstract)
@@ -173,7 +173,7 @@ def summarize_abstract(abstract):
 
 def get_full_text_link(publication_id):
     publi = Publication.objects.get(pk=publication_id)
-    url = 'https://www.ncbi.nlm.nih.gov/pubmed/{}'.format(publi.id_pubmed)
+    url = u'https://www.ncbi.nlm.nih.gov/pubmed/{}'.format(publi.id_pubmed)
     res = request_cache(url, params=PARAMS, is_json=False)
     try:
         start_link = res.index('<h3><span>Full text links</span>')
