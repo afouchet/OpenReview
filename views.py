@@ -168,7 +168,7 @@ def publication_detail(request, publi_id):
     return render(request, 'open_review/desc_publi.html', {
         'publication': publication,
         'similars': similars,
-        'abstract': fetch_publications.get_abstract(publi),
+        'abstract': fetch_publications.get_abstract(publication),
         'rating_overall': rating_overall,
         'rating_field_contribution': rating_field_contribution,
         'rating_methodology': rating_methodology,
