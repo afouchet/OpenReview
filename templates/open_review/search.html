@@ -6,9 +6,11 @@
   $.fn.raty.defaults.path = "{% static 'raty/lib/images/' %}";
 </script>
 
-
 <div id="raty-rating"></div>
 <div class="container">
+   <div class="row search_results">
+     Results for "{{ search_query }}"
+   </div>
    <div class="row search_results">
      Items: {{ first_pub }} - {{ last_pub }} of {{ nb_publi }}
    </div>
