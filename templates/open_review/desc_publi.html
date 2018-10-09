@@ -58,7 +58,13 @@
   {% for comment in publication.publicomment_set.all %}
     <div class="panel panel-primary">
       <div class="panel-heading">
-  	{{ comment.author.first_name }} {{ comment.author.last_name }}
+        <div class="panel-title pull-left">
+  	  {{ comment.author.first_name }} {{ comment.author.last_name }}
+        </div>
+        <div class="panel-title pull-right">
+          {{ comment.created_at }}
+        </div>
+	<div class="clearfix"></div>
       </div>
       <div class="panel-body">
         <div id="rating_global_{{ comment.id }}">Overall rating: </div>
