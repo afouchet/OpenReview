@@ -16,7 +16,7 @@
    </div>
    {% for publi in publications %}
    <div class="row search_result">
-     <a href="{% url 'open_review:article_desc' publi.id %}">{{ publi.title }}</a></br>
+     <a href="{% url 'open_review:article_desc' publi.id %}">{{ publi.title | safe}}</a></br>
      Authors: {{ publi.authors }} </br>
      Source: {{ publi.source }} </br>
      Publication date: {{ publi.pub_date }} </br>

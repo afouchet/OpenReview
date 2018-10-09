@@ -119,7 +119,7 @@ def _save_publi(publi_json, db):
     publi.pub_date = publi_json['pubdate']
     publi.type = publi_json['pubtype']
     publi.source = publi_json['source']
-    publi.title = publi_json['title']
+    publi.title = clean_text(publi_json['title'])
     publi.db = db
     publi.save()
     return publi
@@ -186,3 +186,21 @@ def get_full_text_link(publication_id):
     end_img = link[start_img:].index('>')
     return link[start_link:start_img + end_img + 1]
     
+
+def clean_text(text):
+    """
+    Remove HTML code like
+    - &amp; -> &
+    - &gt; -> >
+    - &lt; -> <
+    """
+    # Using list and not dict because order matter
+    changes_to_do = [
+        ('&amp;', '&'),
+        ('&lt;', '<'),
+        ('&gt;', '>'),
+    ]
+    for old_txt, new_one in changes_to_do:
+        text = text.replace(old_txt, new_one)
+
+    return text

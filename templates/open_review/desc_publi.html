@@ -8,7 +8,7 @@
 
 <!-- This script is making the star rating icons -->
 <div class="container-fluid">
-  <h1>{{ publication.title }}</h1>
+  <h1>{{ publication.title | safe}}</h1>
   <div class="row-fluid">
     <div class="col-lg-8 col-md-8 col-xs-8">
         <div> Number of reviews: {{ publication.publicomment_set.count }}</div>
@@ -40,7 +40,7 @@
         Similar articles</br>
         <hr>
         {% for publi, tags in similars %}
-          <a href="{% url 'open_review:article_desc' publi.id %}">{{ publi.title }}</a></br>
+          <a href="{% url 'open_review:article_desc' publi.id %}">{{ publi.title | safe}}</a></br>
       	[{{ publi.source }}, {{ publi.pub_date }}]
       	{% if 'pubmed_pubmed_reviews' in tags %}
       	  <span class="badge">Review</span>
